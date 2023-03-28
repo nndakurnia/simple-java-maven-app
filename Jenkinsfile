@@ -1,12 +1,8 @@
 node {
     try {
-        def mvnHome
-        stage('Preparation') {
-            git 'https://github.com/nndakurnia/simple-java-maven-app.git'           
-            mvnHome = tool 'M3'
-        }
+        docker.image('maven:3-alpine').inside('-v /root/.m2:/root/.m2')
         stage('Build') {
-            sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package"
+            sh 'mvn -B -DskipTests clean package'
         }
         stage('Test') {
             sh 'mvn test'
