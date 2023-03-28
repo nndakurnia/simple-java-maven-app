@@ -6,7 +6,7 @@ node {
             sh 'mvn -B -DskipTests clean package'
         }
     }
-    withDockerContainer {
+    withDockerContainer('maven:3.9.0-eclipse-temurin-11') {
         // some block
         stage('Test') {
             checkout scm
