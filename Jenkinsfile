@@ -1,13 +1,17 @@
 node {
-    agent { 
-        docker.images('maven:3.9.0-eclipse-temurin-11').inside('-v /root/.m2:/root/.m2')
+    withDockerContainer('maven:3.9.0-eclipse-temurin-11') {
+        // some block
+        stage('Build') {
+            checkout scm
+            sh 'mvn -B -DskipTests clean package'
+        }
     }
-    // docker.images('maven:3.9.0-eclipse-temurin-11').inside('-v /root/.m2:/root/.m2')
-    stage('Build') {
-        sh 'mvn -B -DskipTests clean package'
-    }
-    stage('Test') {
-        sh 'mvn test'
-        junit 'target/surefire-reports/*.xml'
+    withDockerContainer {
+        // some block
+        stage('Test') {
+            checkout scm
+            sh 'mvn test'
+            junit 'target/surefire-reports/*.xml'
+        }
     }
 }
