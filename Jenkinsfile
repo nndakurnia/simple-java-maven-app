@@ -20,10 +20,7 @@ node {
     withDockerContainer('maven:3.9.0-eclipse-temurin-11') {
         stage('Deploy') {
             sh './jenkins/scripts/deliver.sh'
-            echo $! > .pidfile
-            echo 'Aplikasi akan berakhir dalam 1 menit'
-            sh 'sleep 60'
-            kill $(cat .pidfile)
+            sh 'kill $(cat .pidfile)'
         }
     }
 }
